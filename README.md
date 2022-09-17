@@ -2,6 +2,57 @@
 
 > 
 
+## Steps
+
+Generate feathers app
+
+```shell
+feathers generate app 
+```
+
+Initialize prisma
+
+```shell
+npx prisma init --datasource-provider postgres
+```
+
+Install dotenv
+
+```
+npm install dotenv
+```
+
+Add dotenv initialization in `src/index.js` at first line
+
+```js
+require('dotenv').config();
+```
+
+### Database prototyping
+
+Create database schema in `prisma/schema.prisma`.
+
+Push database schema
+
+```shell
+npx prisma db push
+```
+
+### Database migration
+
+Run database migration
+
+```shell
+npx prisma migrate dev --name init
+```
+
+Generate prisma client
+
+```shell
+npx prisma generate
+```
+
+
 ## About
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
