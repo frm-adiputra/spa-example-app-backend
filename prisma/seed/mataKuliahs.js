@@ -6,4 +6,11 @@ module.exports = async (prisma) => {
             sks: 3
         }
     })
+    await prisma.mataKuliahs.create({
+        data: {
+            kode: 'MK002',
+            nama: 'MK Dua',
+            sks: 2
+        }
+    })
 }
