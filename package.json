@@ -61,6 +61,9 @@
     "nodemon": "^2.0.20",
     "prisma": "^4.3.1"
   },
+  "prisma": {
+    "seed": "node prisma/seed/index.js"
+  },
   "volta": {
     "node": "16.17.0"
   }
