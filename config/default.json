@@ -28,7 +28,7 @@
       "passwordField": "password"
     },
     "oauth": {
-      "redirect": "/",
+      "redirect": "http://localhost:3000",
       "google": {
         "key": "GOOGLE_CLIENT_ID",
         "secret": "GOOGLE_CLIENT_SECRET",
