@@ -1,5 +1,5 @@
 const { OAuthStrategy, expressOauth } = require('@feathersjs/authentication-oauth');
-const { AuthenticationService } = require('@feathersjs/authentication');
+const { AuthenticationService, JWTStrategy } = require('@feathersjs/authentication');
 
 class GoogleStrategy extends OAuthStrategy {
   async getEntityData(profile) {
@@ -19,7 +19,7 @@ class GoogleStrategy extends OAuthStrategy {
 module.exports = app => {
   const authentication = new AuthenticationService(app);
 
-  // authentication.register('jwt', new JWTStrategy());
+  authentication.register('jwt', new JWTStrategy());
   // authentication.register('local', new LocalStrategy());
   authentication.register('google', new GoogleStrategy());
 
