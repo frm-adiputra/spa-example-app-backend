@@ -33,10 +33,11 @@
         "key": "GOOGLE_CLIENT_ID",
         "secret": "GOOGLE_CLIENT_SECRET",
         "scope": [
+          "openid",
           "email",
-          "profile",
-          "openid"
-        ]
+          "profile"
+        ],
+        "nonce": true
       }
     }
   },

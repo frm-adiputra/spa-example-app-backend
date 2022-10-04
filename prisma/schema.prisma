@@ -12,6 +12,7 @@ datasource db {
 
 model users {
   id    String  @id @default(uuid())
+  googleId String  @unique
   email String  @unique
   name  String?
 }
