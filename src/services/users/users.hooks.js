@@ -1,5 +1,9 @@
 const { authenticate } = require("@feathersjs/authentication").hooks;
 
+async function logParams(context) {
+  console.log(context.params);
+}
+
 async function logData(context) {
   console.log("-->", context.data);
 }
@@ -19,11 +23,11 @@ async function logResult(context) {
 module.exports = {
   before: {
     all: [logType],
-    find: [authenticate("jwt")],
-    get: [authenticate("jwt")],
+    find: [authenticate("jwt"), logParams],
+    get: [authenticate("jwt"), logParams],
     create: [logData],
     update: [authenticate("jwt")],
-    patch: [authenticate("jwt")],
+    patch: [authenticate("jwt"), logData],
     remove: [authenticate("jwt")],
   },
 
