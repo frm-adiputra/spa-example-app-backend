@@ -40,5 +40,5 @@
       }
     }
   },
-  "postgres": "postgres://dev_admin@localhost:5432/spa_db"
+  "postgres": "DATABASE_URL"
 }
