@@ -10,11 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id    String  @id @default(uuid())
-  googleId String  @unique
-  email String  @unique
-  name  String?
+model Users {
+  id             String  @id @default(uuid())
+  googleId       String  @unique
+  email          String  @unique
+  name           String?
+  profilePicture String?
 }
 
 model posts {
@@ -29,4 +30,141 @@ model mataKuliahs {
   kode String
   nama String
   sks  Int
+}
+
+model Bentuk {
+  id       String     @id @default(uuid())
+  bentuk   String @unique
+  Kegiatan Kegiatan[]
+}
+
+model Luaran {
+  id       String     @id @default(uuid())
+  luaran   String @unique
+  Kegiatan Kegiatan[]
+}
+
+model Sasaran {
+  id        String      @id @default(uuid())
+  sasaran   String @unique
+  Indikator Indikator[]
+}
+
+model Indikator {
+  id        String     @id @default(uuid())
+  sasaranId String
+  sasaran   Sasaran    @relation(fields: [sasaranId], references: [id])
+  indikator String
+  Kegiatan  Kegiatan[]
+}
+
+model SumberPendanaan {
+  id     String @id @default(uuid())
+  sumber String @unique
+  Mou    Mou[]
+  Moa    Moa[]
+  Ia     Ia[]
+}
+
+model Kegiatan {
+  id           String    @id @default(uuid())
+  bentukId     String
+  bentuk       Bentuk    @relation(fields: [bentukId], references: [id])
+  nilaiKontrak Int
+  luaranId     String
+  luaran       Luaran    @relation(fields: [luaranId], references: [id])
+  indikatorId  String
+  indikator    Indikator @relation(fields: [indikatorId], references: [id])
+  mouId        String
+  moaId        String
+  iaId         String
+  mou          Mou       @relation(fields: [mouId], references: [id])
+  moa          Moa       @relation(fields: [moaId], references: [id])
+  ia           Ia        @relation(fields: [iaId], references: [id])
+}
+
+enum StatusKerjasama {
+  AKTIF
+  TIDAK_AKTIF
+}
+
+model Mou {
+  id                String              @id @default(uuid())
+  tglMulai          DateTime?
+  tglAkhir          DateTime?
+  noDokumen         String?             @unique
+  judul             String
+  deskripsi         String
+  fileDokumen       String?
+  sumberPendanaanId String
+  sumberPendanaan   SumberPendanaan     @relation(fields: [sumberPendanaanId], references: [id])
+  status            StatusKerjasama
+  Moa               Moa[]
+  Kegiatan          Kegiatan[]
+  PenggiatKerjasama PenggiatKerjasama[]
+}
+
+model Moa {
+  id                String              @id @default(uuid())
+  mouId             String
+  mou               Mou                 @relation(fields: [mouId], references: [id])
+  tglMulai          DateTime?
+  tglAkhir          DateTime?
+  noDokumen         String?             @unique
+  judul             String
+  deskripsi         String
+  fileDokumen       String?
+  sumberPendanaanId String
+  sumberPendanaan   SumberPendanaan     @relation(fields: [sumberPendanaanId], references: [id])
+  status            StatusKerjasama
+  Ia                Ia[]
+  Kegiatan          Kegiatan[]
+  PenggiatKerjasama PenggiatKerjasama[]
+}
+
+model Ia {
+  id                String              @id @default(uuid())
+  moaId             String
+  moa               Moa                 @relation(fields: [moaId], references: [id])
+  tglMulai          DateTime?
+  tglAkhir          DateTime?
+  noDokumen         String?             @unique
+  judul             String
+  deskripsi         String
+  fileDokumen       String?
+  sumberPendanaanId String
+  sumberPendanaan   SumberPendanaan     @relation(fields: [sumberPendanaanId], references: [id])
+  status            StatusKerjasama
+  Kegiatan          Kegiatan[]
+  PenggiatKerjasama PenggiatKerjasama[]
+}
+
+enum JenisPenggiat {
+  EKSTERNAL
+  FAKULTAS
+  JURUSAN
+  PRODI
+}
+
+model Penggiat {
+  id       String        @id @default(uuid())
+  parentId String?
+  parent   Penggiat?     @relation("ParentChildren", fields: [parentId], references: [id])
+  children Penggiat[]    @relation("ParentChildren")
+  jenis    JenisPenggiat
+  nama     String        @unique
+  alamat   String
+}
+
+model PenggiatKerjasama {
+  id              String @id @default(uuid())
+  pihakKe         Int
+  penandaTangan   String
+  penanggungJawab String
+  mouId           String
+  moaId           String
+  iaId            String
+  mou             Mou    @relation(fields: [mouId], references: [id])
+  moa             Moa    @relation(fields: [moaId], references: [id])
+  ia              Ia     @relation(fields: [iaId], references: [id])
 }
