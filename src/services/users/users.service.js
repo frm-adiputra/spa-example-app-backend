@@ -4,7 +4,7 @@ const hooks = require('./users.hooks');
 
 module.exports = function (app) {
   const options = {
-    model: 'users',
+    model: 'Users',
     client: app.get('prisma'),
     paginate: app.get('paginate')
   };
