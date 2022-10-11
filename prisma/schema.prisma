@@ -33,21 +33,27 @@ model mataKuliahs {
 }
 
 model Bentuk {
-  id       String     @id @default(uuid())
-  bentuk   String @unique
-  Kegiatan Kegiatan[]
+  id        String     @id @default(uuid())
+  bentuk    String     @unique
+  Kegiatan  Kegiatan[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Luaran {
-  id       String     @id @default(uuid())
-  luaran   String @unique
-  Kegiatan Kegiatan[]
+  id        String     @id @default(uuid())
+  luaran    String     @unique
+  Kegiatan  Kegiatan[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Sasaran {
   id        String      @id @default(uuid())
-  sasaran   String @unique
+  sasaran   String      @unique
   Indikator Indikator[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model Indikator {
@@ -56,14 +62,18 @@ model Indikator {
   sasaran   Sasaran    @relation(fields: [sasaranId], references: [id])
   indikator String
   Kegiatan  Kegiatan[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model SumberPendanaan {
-  id     String @id @default(uuid())
-  sumber String @unique
-  Mou    Mou[]
-  Moa    Moa[]
-  Ia     Ia[]
+  id        String   @id @default(uuid())
+  sumber    String   @unique
+  Mou       Mou[]
+  Moa       Moa[]
+  Ia        Ia[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Kegiatan {
@@ -81,6 +91,8 @@ model Kegiatan {
   mou          Mou       @relation(fields: [mouId], references: [id])
   moa          Moa       @relation(fields: [moaId], references: [id])
   ia           Ia        @relation(fields: [iaId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 enum StatusKerjasama {
@@ -102,6 +114,8 @@ model Mou {
   Moa               Moa[]
   Kegiatan          Kegiatan[]
   PenggiatKerjasama PenggiatKerjasama[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
 model Moa {
@@ -120,6 +134,8 @@ model Moa {
   Ia                Ia[]
   Kegiatan          Kegiatan[]
   PenggiatKerjasama PenggiatKerjasama[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
 model Ia {
@@ -137,6 +153,8 @@ model Ia {
   status            StatusKerjasama
   Kegiatan          Kegiatan[]
   PenggiatKerjasama PenggiatKerjasama[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
 enum JenisPenggiat {
@@ -147,24 +165,28 @@ enum JenisPenggiat {
 }
 
 model Penggiat {
-  id       String        @id @default(uuid())
-  parentId String?
-  parent   Penggiat?     @relation("ParentChildren", fields: [parentId], references: [id])
-  children Penggiat[]    @relation("ParentChildren")
-  jenis    JenisPenggiat
-  nama     String        @unique
-  alamat   String
+  id        String        @id @default(uuid())
+  parentId  String?
+  parent    Penggiat?     @relation("ParentChildren", fields: [parentId], references: [id])
+  children  Penggiat[]    @relation("ParentChildren")
+  jenis     JenisPenggiat
+  nama      String        @unique
+  alamat    String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model PenggiatKerjasama {
-  id              String @id @default(uuid())
+  id              String   @id @default(uuid())
   pihakKe         Int
   penandaTangan   String
   penanggungJawab String
   mouId           String
   moaId           String
   iaId            String
-  mou             Mou    @relation(fields: [mouId], references: [id])
-  moa             Moa    @relation(fields: [moaId], references: [id])
-  ia              Ia     @relation(fields: [iaId], references: [id])
+  mou             Mou      @relation(fields: [mouId], references: [id])
+  moa             Moa      @relation(fields: [moaId], references: [id])
+  ia              Ia       @relation(fields: [iaId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
