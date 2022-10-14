@@ -1,4 +1,5 @@
 // Application hooks that run for every service
+const logger = require("./logger");
 
 module.exports = {
   before: {
@@ -8,7 +9,7 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   after: {
@@ -18,16 +19,20 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   error: {
-    all: [],
+    all: [
+      ({ error }) => {
+        logger.error(error);
+      },
+    ],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
+    remove: [],
+  },
 };
