@@ -20,6 +20,8 @@ const authentication = require('./authentication');
 
 const prisma = require('./prisma');
 
+const knex = require('./knex');
+
 const app = express(feathers());
 
 // Load app configuration
@@ -41,6 +43,9 @@ app.configure(express.rest());
 
 
 app.configure(prisma);
+
+
+app.configure(knex);
 
 
 // Configure other middleware (see `middleware/index.js`)

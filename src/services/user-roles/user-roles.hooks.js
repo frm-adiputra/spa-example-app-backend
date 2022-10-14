@@ -1,13 +1,9 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-async function logParams(context) {
-  console.log(context.params.query);
-}
-
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [logParams],
+    find: [],
     get: [],
     create: [],
     update: [],

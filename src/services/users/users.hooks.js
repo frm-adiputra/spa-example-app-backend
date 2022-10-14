@@ -1,11 +1,11 @@
 const { authenticate } = require("@feathersjs/authentication").hooks;
 
 async function logParams(context) {
-  console.log(context.params);
+  // console.log(context.params);
 }
 
 async function logData(context) {
-  console.log("-->", context.data);
+  // console.log("-->", context.data);
 }
 
 async function logType(context) {
@@ -17,8 +17,8 @@ async function logError(context) {
 }
 
 async function logResult(context) {
-  console.log('--> RESULT')
-  console.log(context.result)
+  // console.log('--> RESULT')
+  // console.log(context.result)
 }
 module.exports = {
   before: {
