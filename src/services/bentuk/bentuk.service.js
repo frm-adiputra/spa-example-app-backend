@@ -1,11 +1,12 @@
 // Initializes the `bentuk` service on path `/bentuk`
 const { Bentuk } = require("./bentuk.class");
 const hooks = require("./bentuk.hooks");
+const createModel = require('../../models/bentuk.model');
 
 module.exports = function (app) {
   const options = {
-    model: "Bentuk",
-    client: app.get("prisma"),
+    // Model: app.get('knexClient'),
+    Model: createModel(app),
     paginate: { default: 20, max: 100 },
   };
 

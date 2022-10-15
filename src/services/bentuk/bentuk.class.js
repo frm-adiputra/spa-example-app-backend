@@ -1,10 +1,10 @@
-const { PrismaService } = require('feathers-prisma');
+const { Service } = require("feathers-knex");
 
-exports.Bentuk = class Bentuk extends PrismaService {
-  constructor({ model, ...options }, app) {
+exports.Bentuk = class Bentuk extends Service {
+  constructor(options) {
     super({
-      model,
       ...options,
-    }, app.get('prisma'));
+      name: "Bentuk",
+    });
   }
 };
