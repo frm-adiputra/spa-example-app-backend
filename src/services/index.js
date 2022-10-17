@@ -3,6 +3,7 @@ const mataKuliahs = require('./mata_kuliahs/mata_kuliahs.service.js');
 const bentuk = require('./bentuk/bentuk.service.js');
 const sumberPendanaan = require('./sumber-pendanaan/sumber-pendanaan.service.js');
 const userRoles = require('./user-roles/user-roles.service.js');
+const uploads = require('./uploads/uploads.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users);
@@ -10,4 +11,5 @@ module.exports = function (app) {
   app.configure(bentuk);
   app.configure(sumberPendanaan);
   app.configure(userRoles);
+  app.configure(uploads);
 };
