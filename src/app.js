@@ -38,6 +38,9 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
 
+// Host the uploads folder
+app.use('/files', express.static('uploadsDir'));
+
 // Set up Plugins and providers
 app.configure(express.rest());
 

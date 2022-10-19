@@ -3,16 +3,21 @@ const dauria = require("dauria");
 
 module.exports = {
   before: {
-    all: [authenticate("jwt")],
+    // all: [authenticate("jwt")],
+    all: [],
     find: [],
     get: [],
     create: [
       (context) => {
+        console.log("==>", "UPLOADS");
+        console.log("==> Data", context.data);
+        console.log("==> Params", context.params);
         if (!context.data.uri && context.params.file) {
           const file = context.params.file;
           const uri = dauria.getBase64DataURI(file.buffer, file.mimetype);
           context.data = { uri: uri };
         }
+        return context;
       },
     ],
     update: [],
