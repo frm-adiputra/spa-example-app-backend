@@ -10,7 +10,7 @@ module.exports = {
     create: [
       (context) => {
         console.log("==>", "UPLOADS");
-        console.log("==> Data", context.data);
+        console.log("==> Data", JSON.stringify(context.data, null, 2));
         console.log("==> Params", context.params);
         if (!context.data.uri && context.params.file) {
           const file = context.params.file;
@@ -29,7 +29,20 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      async ({ result, app }) => {
+        const id = result.id
+        try {
+          await app.service("file-catalog").get(id);
+        } catch (err) {
+          if (err.name === 'NotFound') {
+            await app.service("file-catalog").create({ id });
+          } else {
+            throw err
+          }
+        }
+      },
+    ],
     update: [],
     patch: [],
     remove: [],

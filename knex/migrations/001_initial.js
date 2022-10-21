@@ -29,11 +29,17 @@ exports.up = function (knex) {
       ]).notNullable();
       t.unique(["email", "role"]);
     })
+    .createTable("FileCatalog", function (t) {
+      t.string("id").notNullable().primary();
+      t.integer("usageCount").notNullable().defaultTo(0);
+      t.timestamps(true, true, true);
+    })
     .createTable("Bentuk", function (t) {
       t.uuid("id", { primaryKey: true })
         .notNullable()
         .defaultTo(knex.raw("uuid_generate_v4()"));
       t.string("bentuk").notNullable().unique();
+      t.string("dokumen");
       t.timestamps(true, true, true);
     });
 };
@@ -46,6 +52,7 @@ exports.down = function (knex) {
   return knex.schema
     .withSchema("public")
     .dropTableIfExists("Bentuk")
+    .dropTableIfExists("FileCatalog")
     .dropTableIfExists("Users")
     .dropTableIfExists("UserRoles");
 };

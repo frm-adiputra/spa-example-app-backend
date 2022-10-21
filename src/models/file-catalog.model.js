@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
-// UserRoles-model.js - A KnexJS
-//
+// FileCatalog-model.js - A KnexJS
+// 
 // See http://knexjs.org/
 // for more of what you can do here.
 module.exports = function (app) {
-  const db = app.get("knexClient");
+  const db = app.get('knexClient');
   return db;
 };

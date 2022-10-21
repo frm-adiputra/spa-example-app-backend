@@ -13,7 +13,7 @@ exports.seed = async function (knex) {
     { email: "someone@gmail.com", role: "ADMIN_FAKULTAS" },
   ]);
 
-  for (let i = 1; i <= 100; i++) {
-    await knex("Bentuk").insert({ bentuk: `Bentuk ${i}` });
-  }
+  // for (let i = 1; i <= 100; i++) {
+  //   await knex("Bentuk").insert({ bentuk: `Bentuk ${i}` });
+  // }
 };
