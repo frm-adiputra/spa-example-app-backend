@@ -1,5 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
+const { BadRequest } = require("@feathersjs/errors");
 
 /**
  * Hook untuk memperbarui atribut updatedAt dengan waktu saat ini.
@@ -21,6 +22,51 @@ function addOrderByRecentlyUpdated(context) {
   const query = context.service.createQuery(context.params);
   query.orderBy("updatedAt", "desc");
   context.params.knex = query;
+}
+
+/**
+ * Hook untuk mendapatkan detail dari file upload.
+ * File upload yang dimaksud adalah yang ditentukan pada parameter `attr`.
+ * Detail file disimpan pada context.data[`${attr}FileSize`] untuk besar file
+ * dan context.data[`${attr}FileType`] untuk tipe file.
+ * @param {*} attr
+ * @returns
+ */
+function getFileInfo(attrs) {
+  return async ({ app, data }) => {
+    const uploadsSvc = app.service("uploads");
+    for (let i = 0; i < attrs.length; i++) {
+      const attr = attrs[i];
+      if (!data[attr]) {
+        data[`${attr}__fileSize`] = null;
+        data[`${attr}__fileType`] = null;
+        continue;
+      }
+
+      const file = await uploadsSvc.get(data[attr]);
+      data[`${attr}__fileSize`] = file.size;
+      data[`${attr}__fileType`] = file.contentType;
+    }
+  };
+}
+
+/**
+ * Hook untuk menghilangkan detail dari file upload.
+ * File upload yang dimaksud adalah yang ditentukan sebagai setiap item
+ * pada parameter `attrs`.
+ * Detail file yang dihapus adalah context.data[`${attr}__fileSize`] dan
+ * context.data[`${attr}__fileType`].
+ * @param {*} attr
+ * @returns
+ */
+function removeFileInfo(attrs) {
+  return ({ data }) => {
+    for (let i = 0; i < attrs.length; i++) {
+      const attr = attrs[i];
+      delete data[`${attr}__fileSize`];
+      delete data[`${attr}__fileType`];
+    }
+  };
 }
 
 /**
@@ -196,10 +242,44 @@ function removeFileUpload(attr) {
   };
 }
 
+function validateAndCast(schema, yupOpts, fileAttrs) {
+  return (context) => {
+    const data = context.data;
+    try {
+      schema.validateSync(data, yupOpts);
+    } catch (err) {
+      const errors = {};
+      for (let i = 0; i < err.inner.length; i++) {
+        const e = err.inner[i];
+        const path = e.path.replace(/(__fileSize|__fileInfo)$/, "");
+        if (!errors[path]) {
+          errors[path] = e.errors[0];
+        }
+      }
+
+      throw new BadRequest("Invalid data", {
+        errors,
+      });
+    }
+
+    const omitAttrs = [];
+    for (let i = 0; i < fileAttrs.length; i++) {
+      const attr = fileAttrs[i];
+      omitAttrs.push(`${attr}__fileSize`);
+      omitAttrs.push(`${attr}__fileType`);
+    }
+
+    context.data = schema.omit(omitAttrs).cast(data, yupOpts);
+  };
+}
+
 module.exports = {
   updateTimestamp,
   addOrderByRecentlyUpdated,
   createFileUpload,
   updateFileUpload,
   removeFileUpload,
+  getFileInfo,
+  removeFileInfo,
+  validateAndCast,
 };
