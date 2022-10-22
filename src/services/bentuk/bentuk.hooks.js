@@ -20,7 +20,12 @@ const schema = yup.object().shape({
   dokumen: yup.string().trim().nullable(),
   dokumen__fileSize: yup.number().when("dokumen", {
     is: (v) => yup.string().trim().isValidSync(v),
-    then: yup.number().max(3, "Ukuran file maksimal ${max} B"),
+    then: yup.number().max(3000000, "Ukuran file maksimal ${max} B"),
+    otherwise: yup.mixed().nullable(),
+  }),
+  dokumen__fileType: yup.string().when("dokumen", {
+    is: (v) => yup.string().trim().isValidSync(v),
+    then: yup.string().matches(/application\/vnd.openxmlformats-officedocument.presentationml.presentation/),
     otherwise: yup.mixed().nullable(),
   }),
 });
