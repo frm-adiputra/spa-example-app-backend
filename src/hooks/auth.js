@@ -1,5 +1,18 @@
 const { Forbidden } = require("@feathersjs/errors");
 
+/**
+ * Hooks untuk membatasi akses terhadap service methods berdasarkan roles dari
+ * user.
+ * Cocok untuk ditempatkan pada "before hook" setelah hook `authenticate(...)`.
+ * @example
+ * // hanya user dengan role "ADMIN" atau "MANAJER" yang bisa mengakses service methods
+ * before: {
+ *   all: [authenticate("jwt"), auth.allowRoles(["ADMIN", "MANAJER"])]
+ *   ...
+ * }
+ * @param {Array} rolesAllowed - daftar roles yang diperbolehkan
+ * @returns 
+ */
 function allowRoles(rolesAllowed) {
   return async ({ app, params }) => {
     params.roles = [];

@@ -54,6 +54,7 @@
     "feathers-blob": "^2.6.0",
     "feathers-knex": "^8.0.1",
     "feathers-prisma": "^0.6.0",
+    "feathers-validate-joi": "^4.0.1",
     "fs-blob-store": "^6.0.0",
     "helmet": "^5.1.1",
     "knex": "^2.3.0",
