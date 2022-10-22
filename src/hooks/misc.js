@@ -249,9 +249,12 @@ function validateAndCast(schema, yupOpts, fileAttrs) {
       schema.validateSync(data, yupOpts);
     } catch (err) {
       const errors = {};
+      if (!err.inner) {
+        throw err
+      }
       for (let i = 0; i < err.inner.length; i++) {
         const e = err.inner[i];
-        const path = e.path.replace(/(__fileSize|__fileInfo)$/, "");
+        const path = e.path.replace(/(__fileSize|__fileType)$/, "");
         if (!errors[path]) {
           errors[path] = e.errors[0];
         }
